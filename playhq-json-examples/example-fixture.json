@@ -1,0 +1,515 @@
+{
+    "data": [
+        {
+            "competitors": [
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": false,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "f1b92c31-a2ef-4a31-953e-61f0a4e85f74",
+                    "isHomeTeam": true,
+                    "name": "Magic U10 Girls Purple",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-04-22T10:50:09.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "b8a62f18-eb73-491f-8e99-7da65232f4ae",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R1",
+                "id": "2141cc81-be4d-455a-aa77-de9d66da1d52",
+                "isFinalRound": false,
+                "name": "Round 1"
+            },
+            "schedule": {
+                "date": "2022-04-30",
+                "time": "09:15:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-05-02T04:24:35.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/b8a62f18",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.73315,
+                    "line1": "25 Outlook Road",
+                    "longitude": 144.97684,
+                    "postcode": "3058",
+                    "state": "VIC",
+                    "suburb": "Coburg North"
+                },
+                "id": "84783227-07b3-4e74-906e-f318b26b5ea3",
+                "name": "Coburg Basketball Stadium",
+                "surfaceAbbreviation": "Crt4",
+                "surfaceName": "Court 4"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "99c2e892-28f5-423a-b399-9291a3994801",
+                    "isHomeTeam": true,
+                    "name": "Jets U10 Girls Yellow",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": false,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-02T05:13:39.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "bf20152d-2afb-4870-b693-ced52895061c",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R2",
+                "id": "b8e8590b-5579-4c0e-ae30-4b1c7cc5dd77",
+                "isFinalRound": false,
+                "name": "Round 2"
+            },
+            "schedule": {
+                "date": "2022-05-07",
+                "time": "09:15:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-05-09T08:38:12.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/bf20152d",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.73315,
+                    "line1": "25 Outlook Road",
+                    "longitude": 144.97684,
+                    "postcode": "3058",
+                    "state": "VIC",
+                    "suburb": "Coburg North"
+                },
+                "id": "84783227-07b3-4e74-906e-f318b26b5ea3",
+                "name": "Coburg Basketball Stadium",
+                "surfaceAbbreviation": "Crt3",
+                "surfaceName": "Court 3"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "0bdd9343-d527-42b5-bd80-ca22601badbf",
+                    "isHomeTeam": true,
+                    "name": "Panthers U10 Girls Green",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": false,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-02T05:13:39.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "a6c625ec-fd4b-480c-aa33-c7262baa2a68",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R3",
+                "id": "db8567d2-a8e0-4791-a3c9-428776bbc251",
+                "isFinalRound": false,
+                "name": "Round 3"
+            },
+            "schedule": {
+                "date": "2022-05-14",
+                "time": "08:30:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-05-16T09:03:33.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/a6c625ec",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.73315,
+                    "line1": "25 Outlook Road",
+                    "longitude": 144.97684,
+                    "postcode": "3058",
+                    "state": "VIC",
+                    "suburb": "Coburg North"
+                },
+                "id": "84783227-07b3-4e74-906e-f318b26b5ea3",
+                "name": "Coburg Basketball Stadium",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": true,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "LOST",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 6
+                },
+                {
+                    "id": "ea68d2b2-e51f-4e94-99f5-977c07706c5d",
+                    "isHomeTeam": false,
+                    "name": "St Fidelis U10 Girls Blue",
+                    "outcome": "WON",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 7
+                }
+            ],
+            "createdAt": "2022-05-02T05:13:39.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "f58fee8b-1ba7-4c31-97ff-178a88eb0fd6",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R4",
+                "id": "ee503bcf-1819-47a7-a718-6847a30ac80f",
+                "isFinalRound": false,
+                "name": "Round 4"
+            },
+            "schedule": {
+                "date": "2022-05-21",
+                "time": "10:00:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-05-23T09:51:05.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/f58fee8b",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.74845,
+                    "line1": "21 Railway Place West",
+                    "longitude": 144.99944,
+                    "postcode": "3072",
+                    "state": "VIC",
+                    "suburb": "Preston"
+                },
+                "id": "e3b3f0f5-c437-401c-b569-6f5a38473df2",
+                "name": "St John's College (Preston)",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "505c0015-74da-4798-b907-db4406ecee18",
+                    "isHomeTeam": false,
+                    "name": "Thunder U10 Girls Blue",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": true,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-23T10:49:05.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "3430eb64-5d1e-412a-94f5-fe462e039fb2",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R5",
+                "id": "4e8da3f8-0177-4532-b09a-ac78b7e2854f",
+                "isFinalRound": false,
+                "name": "Round 5"
+            },
+            "schedule": {
+                "date": "2022-05-28",
+                "time": "09:15:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-05-30T11:21:22.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/3430eb64",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.67041,
+                    "line1": "26-36 King Street",
+                    "longitude": 144.9418,
+                    "postcode": "3047",
+                    "state": "VIC",
+                    "suburb": "Dallas"
+                },
+                "id": "7edd5c40-8a6c-4110-bb50-a0d2c355a5a7",
+                "name": "Dallas Brooks Community Primary School",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "0bdd9343-d527-42b5-bd80-ca22601badbf",
+                    "isHomeTeam": true,
+                    "name": "Panthers U10 Girls Green",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": false,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-23T10:49:05.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "d31b343f-f229-4fd5-9834-d83486787a2b",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R6",
+                "id": "967548cd-ec49-47c7-880d-ef854766dc67",
+                "isFinalRound": false,
+                "name": "Round 6"
+            },
+            "schedule": {
+                "date": "2022-06-04",
+                "time": "08:30:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-06-07T06:06:05.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/d31b343f",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.67041,
+                    "line1": "26-36 King Street",
+                    "longitude": 144.9418,
+                    "postcode": "3047",
+                    "state": "VIC",
+                    "suburb": "Dallas"
+                },
+                "id": "7edd5c40-8a6c-4110-bb50-a0d2c355a5a7",
+                "name": "Dallas Brooks Community Primary School",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "47eec7cd-1f20-43eb-9a55-5f3313ff2d22",
+                    "isHomeTeam": false,
+                    "name": "Melbourne Warriors u/10g",
+                    "outcome": "LOST",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 0
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": true,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "WON",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-23T10:49:05.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "c4168b6b-32c8-4b47-ac80-199e8d0d71b2",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R7",
+                "id": "bdf8528d-b11c-414d-a4d3-a03b2109ea9a",
+                "isFinalRound": false,
+                "name": "Round 7"
+            },
+            "schedule": {
+                "date": "2022-06-18",
+                "time": "09:15:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-06-20T10:20:34.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/c4168b6b",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.73315,
+                    "line1": "25 Outlook Road",
+                    "longitude": 144.97684,
+                    "postcode": "3058",
+                    "state": "VIC",
+                    "suburb": "Coburg North"
+                },
+                "id": "84783227-07b3-4e74-906e-f318b26b5ea3",
+                "name": "Coburg Basketball Stadium",
+                "surfaceAbbreviation": "Crt4",
+                "surfaceName": "Court 4"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": false,
+                    "name": "Magic U10 Girls Gold",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                },
+                {
+                    "id": "abed79d3-d0ed-4e4b-a578-dd255b741164",
+                    "isHomeTeam": true,
+                    "name": "Newlands U10 Girls CROCODILES",
+                    "outcome": "DREW",
+                    "scoreSubTotal": [],
+                    "scoreTotal": 10
+                }
+            ],
+            "createdAt": "2022-05-23T10:49:05.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "5028f449-bdda-482d-a939-0b8a50a19eed",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R8",
+                "id": "5f4a664e-cfa5-4663-977d-bfe6e722a7f6",
+                "isFinalRound": false,
+                "name": "Round 8"
+            },
+            "schedule": {
+                "date": "2022-06-25",
+                "time": "09:15:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "FINAL",
+            "updatedAt": "2022-06-28T08:19:16.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/5028f449",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.71901,
+                    "line1": "Cornwall Road",
+                    "longitude": 144.93687,
+                    "postcode": "3044",
+                    "state": "VIC",
+                    "suburb": "Pascoe Vale"
+                },
+                "id": "1f504200-4acc-47f3-a8b3-68e1308b23fd",
+                "name": "Pascoe Vale Girls College",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        },
+        {
+            "competitors": [
+                {
+                    "id": "ea68d2b2-e51f-4e94-99f5-977c07706c5d",
+                    "isHomeTeam": false,
+                    "name": "St Fidelis U10 Girls Blue"
+                },
+                {
+                    "id": "728b7218-1f46-41be-a7c7-9d8d82376c89",
+                    "isHomeTeam": true,
+                    "name": "Magic U10 Girls Gold"
+                }
+            ],
+            "createdAt": "2022-05-23T10:49:05.000Z",
+            "grade": {
+                "id": "035b8a43-3cc9-478c-b21a-0e956e3837ab",
+                "name": "Saturday U10 Girls Division 2",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/035b8a43"
+            },
+            "id": "5edeaf5e-123a-432a-9ea1-f96b6b9d4431",
+            "pool": null,
+            "round": {
+                "abbreviatedName": "R9",
+                "id": "8bd82e60-2718-4dbe-a50a-533be01d9f49",
+                "isFinalRound": false,
+                "name": "Round 9"
+            },
+            "schedule": {
+                "date": "2022-07-09",
+                "time": "08:30:00",
+                "timezone": "Australia/Melbourne"
+            },
+            "status": "UPCOMING",
+            "updatedAt": "2022-07-04T12:22:51.000Z",
+            "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/junior-domestic-winter-2022/saturday-u-10-girls-division-2/game-centre/5edeaf5e",
+            "venue": {
+                "address": {
+                    "country": "Australia",
+                    "latitude": -37.67041,
+                    "line1": "26-36 King Street",
+                    "longitude": 144.9418,
+                    "postcode": "3047",
+                    "state": "VIC",
+                    "suburb": "Dallas"
+                },
+                "id": "7edd5c40-8a6c-4110-bb50-a0d2c355a5a7",
+                "name": "Dallas Brooks Community Primary School",
+                "surfaceAbbreviation": "Crt1",
+                "surfaceName": "Court 1"
+            }
+        }
+    ],
+    "metadata": {
+        "hasMore": false,
+        "nextCursor": null
+    }
+}

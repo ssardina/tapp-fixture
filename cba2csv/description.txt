@@ -1,0 +1,5 @@
+Please RSVP by Thursday evening.
+
+Opponent: {opponent}
+Venue: {venue}
+Address: {address}{address_tips}

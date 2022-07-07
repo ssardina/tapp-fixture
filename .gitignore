@@ -1,0 +1,5 @@
+.vscode/launch.json
+config.py
+__pycache__
+schedule-teamsapp*.csv
+Brunswick_Magics

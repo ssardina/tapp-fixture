@@ -9,7 +9,7 @@ import datetime
 import logging
 import coloredlogs
 LOGGING_LEVEL = 'INFO'
-LOGGING_LEVEL = 'DEBUG'
+# LOGGING_LEVEL = 'DEBUG'
 LOGGING_FMT = '%(asctime)s %(levelname)s %(message)s'
 # Set format and level of debug
 coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)

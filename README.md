@@ -23,7 +23,13 @@ To run the system the following is needed:
     $ pip install pandas json pyshorteners coloredlogs
     ```
 
-Just open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and 
+Just open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, until generation of CSV file ready to be up to TeamApp.
+
+### Useful resources & Links
+
+- [PlayHQ API documentation](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs).
+- [PlayHQ API's technical documentation](https://docs.playhq.com/tech).
+
 
 ## The original cba2csv system
 

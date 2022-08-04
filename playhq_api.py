@@ -1,4 +1,5 @@
 import json
+from sqlite3 import Timestamp
 import pandas as pd
 import re
 from urllib.request import urlopen
@@ -17,16 +18,18 @@ coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)
 
 API_URL=f'https://api.playhq.com/v1'
 
+GAMES_COLS = ['team_name', 'status', 'schedule.date', 'schedule.time', 'venue.name']
 
 ###########################################################
 # PLAY-HQ MAIN CLASS
 ###########################################################
 class PlayHQ(object):
-    def __init__(self, org_name, org_id, x_api_key, x_tenant) -> None:
+    def __init__(self, org_name, org_id, x_api_key, x_tenant, timezone) -> None:
         self.org_name = org_name
         self.org_id = org_id
         self.x_api_key = x_api_key
         self.x_tenant = x_tenant
+        self.timezone = timezone
 
 
     def get_json(self, key):
@@ -76,22 +79,70 @@ class PlayHQ(object):
 
         return club_teams_df
 
-    def get_games_by_status(self, teams_df: pd.DataFrame, status="UPCOMING") -> pd.DataFrame:
+    def get_team_fixture_df(self, team_id) -> pd.DataFrame:
+        """Extract a df that encodes the whole fixture of a team from the JSON data
+
+        The original dataframe converted from the json data has these columns:
+
+            Index(['id', 'status', 'url', 'createdAt', 'updatedAt', 'pool', 'competitors',
+        'grade.id', 'grade.name', 'grade.url', 'round.id', 'round.name',
+        'round.abbreviatedName', 'round.isFinalRound', 'schedule.date',
+        'schedule.time', 'schedule.timezone', 'venue.id', 'venue.name',
+        'venue.surfaceName', 'venue.surfaceAbbreviation', 'venue.address.line1',
+        'venue.address.postcode', 'venue.address.suburb', 'venue.address.state',
+        'venue.address.country', 'venue.address.latitude',
+        'venue.address.longitude'],
+        dtype='object')
+
+        The returned df has in addition:
+
+            1. createdAt and updatedAt as Timestamp with self.timezone
+            2. new field schedule.timezone combining schedule.date and schedule.time and self.timezone
+            3. replace full stops in column names for _ (full stops are problematic in .query())
+
+        Args:
+            team_id (str): the PlayHQ id of the team to scrape all its games
+
+        Returns:
+            pd.DataFrame: a dataframe representing the fixture of the team
+        """
+        data_json = self.get_json(f"teams/{team_id}/fixture") # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
+        fixture_df = pd.json_normalize(data_json['data'])
+
+        fixture_df['createdAt'] = pd.to_datetime(fixture_df['createdAt']).dt.tz_convert(self.timezone)
+        fixture_df['updatedAt'] = pd.to_datetime(fixture_df['updatedAt']).dt.tz_convert(self.timezone)
+
+        # add column with full game timestamp from date + time + timezone
+        fixture_df['schedule.timestamp'] = fixture_df.apply(lambda x: pd.to_datetime(x['schedule.date'] + " " + x['schedule.time']).tz_localize(x['schedule.timezone']).tz_convert(self.timezone), axis=1)
+
+        # replace full stops in column names for _ (full stops are problematic in .query())
+        fixture_df.columns = fixture_df.columns.str.replace('.', '_', regex=False)
+
+        return fixture_df
+
+
+    def get_games(self, teams_df: pd.DataFrame, from_date : Timestamp, to_date : Timestamp=None, status=None) -> pd.DataFrame:
         """ Build df with all teams's games with status (default is upcoming games)
 
         Args:
             teams_df (pd.DataFrame): teams to extract games
 
         Returns:
-            pd.DataFrame: a df with games
+            pd.DataFrame: a df with games of all the teams within the dates and with status (if any)
         """
+        if to_date is None: # assume 1 day interval
+            to_date = from_date + pd.Timedelta(days=1)
 
         club_upcoming_games = []
         for team in teams_df[['id', 'name']].to_records(index=False):
-            data_json = self.get_json(f"teams/{team[0]}/fixture") # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
-            fixture_df = pd.json_normalize(data_json['data'])
+            fixture_df = self.get_team_fixture_df(team[0])
 
-            fixture_df = fixture_df.loc[fixture_df['status'] == status]
+            # filter wrt date interval
+            fixture_df = fixture_df.query('schedule_timestamp >= @from_date and schedule_timestamp <= @to_date')
+
+            if status is not None:  # need to filter by status
+                # fixture_df = fixture_df.loc[fixture_df['status'] == status]
+                fixture_df = fixture_df.query('status in @status')
             if fixture_df.empty:
                 logging.info(f"No games for team: {team[1]}")
             else:
@@ -99,8 +150,8 @@ class PlayHQ(object):
                 fixture_df.insert(1, 'team_name', re.search("U.*", team[1]).group(0))
                 fixture_df.insert(2, 'team_id', team[0])
                 club_upcoming_games.append(fixture_df)
-        club_upcoming_games_df = pd.concat(club_upcoming_games)
-        club_upcoming_games_df.reset_index(drop=True, inplace=True)
+        club_games_df = pd.concat(club_upcoming_games)
+        club_games_df.reset_index(drop=True, inplace=True)
 
         # club_upcoming_games_df.columns
         # (['id', 'status', 'url', 'createdAt', 'updatedAt', 'pool', 'competitors',
@@ -113,7 +164,8 @@ class PlayHQ(object):
         #        'venue.address.longitude', 'venue'],
         #       dtype='object')
 
-        return club_upcoming_games_df
+        return club_games_df
+
 
 
 
@@ -190,3 +242,10 @@ def to_teamsapp_schedule(games_df, desc_template=DESC_TAPP_DEFAULT):
     )
 
     return games_tapps_df
+
+import calendar
+def next_day(cal_day=calendar.SATURDAY):
+    today = datetime.date.today() #reference point. 
+    day = today + datetime.timedelta((cal_day-today.weekday()) % 7 )
+    return day
+

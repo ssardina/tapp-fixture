@@ -8,13 +8,14 @@ The script was originally done to support the [Brunswick Magic Basketball Club](
 
 As of July 2022, the system was simplified and moved to Python-based Jupyter notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and direct interaction with the [PlayHQ](https://bv.playhq.com/)'s Public [API](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs). This notebook does not require any manual work beforehand (e.g.,receiving a spreadsheet or exporting fixture from Pl and can produce CSV files that are ready to be imported into TeamApp.
 
-To run the system the following is needed:
+## How to use it
+
+First, to run the following is needed to run the notebook system:
 
 - PlayHQ keys to access the Public API:
-    - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
-    - `x-api-key`: provided by PlayHQ support.
-    - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
-
+  - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
+  - `x-api-key`: provided by PlayHQ support.
+  - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
 - Python 3.8+ interpreter.
 - Jupyter notebooks.
 - Non-default packages: `pandas`, `json`, `pyshorteners`, `coloredlogs`:
@@ -23,15 +24,18 @@ To run the system the following is needed:
     $ pip install pandas json pyshorteners coloredlogs
     ```
 
-Just open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, until generation of CSV file ready to be up to TeamApp.
+Second, set all the constants at the top of the notebook. Those constants most often will need to be set once for the club/season.
 
-### Useful resources & Links
+Finally, to run it, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, checking on the way all is consistent, until the generation of `CSV` file ready to be up to TeamApp. 
+
+By default, the system extracts game for **next Saturday**, but this can be changed by setting constant `GAME_DATE`.
+
+## Useful resources & Links
 
 - [PlayHQ API documentation](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs).
 - [PlayHQ API's technical documentation](https://docs.playhq.com/tech).
 
-
-## The original cba2csv system
+## The original `cba2csv` system
 
 The original system, used in 2021-2022, can be found under folder [cba2csv/](cba2csv/). 
 

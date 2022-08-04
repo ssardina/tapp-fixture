@@ -9,8 +9,8 @@ import datetime
 
 import logging
 import coloredlogs
-LOGGING_LEVEL = 'INFO'
-# LOGGING_LEVEL = 'DEBUG'
+# LOGGING_LEVEL = 'INFO'
+LOGGING_LEVEL = 'DEBUG'
 LOGGING_FMT = '%(asctime)s %(levelname)s %(message)s'
 # Set format and level of debug
 coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)
@@ -18,7 +18,7 @@ coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)
 
 API_URL=f'https://api.playhq.com/v1'
 
-GAMES_COLS = ['team_name', 'status', 'schedule.date', 'schedule.time', 'venue.name']
+GAMES_COLS = ['team_name', 'status', 'schedule_timestamp', 'venue_name']
 
 ###########################################################
 # PLAY-HQ MAIN CLASS
@@ -109,14 +109,18 @@ class PlayHQ(object):
         data_json = self.get_json(f"teams/{team_id}/fixture") # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
         fixture_df = pd.json_normalize(data_json['data'])
 
+        # replace full stops in column names for _ (full stops are problematic in .query())
+        fixture_df.columns = fixture_df.columns.str.replace('.', '_', regex=False)
+
+
         fixture_df['createdAt'] = pd.to_datetime(fixture_df['createdAt']).dt.tz_convert(self.timezone)
         fixture_df['updatedAt'] = pd.to_datetime(fixture_df['updatedAt']).dt.tz_convert(self.timezone)
 
         # add column with full game timestamp from date + time + timezone
-        fixture_df['schedule.timestamp'] = fixture_df.apply(lambda x: pd.to_datetime(x['schedule.date'] + " " + x['schedule.time']).tz_localize(x['schedule.timezone']).tz_convert(self.timezone), axis=1)
+        fixture_df.loc[fixture_df['schedule_time'] == "", 'schedule_time'] = "00:00:00" # handle empty times
+        fixture_df.loc[fixture_df['schedule_timezone'] == "", 'schedule_timezone'] = self.timezone
+        fixture_df['schedule_timestamp'] = fixture_df.apply(lambda x: pd.to_datetime(f"{x['schedule_date']} {x['schedule_time']}").tz_localize(x['schedule_timezone']).tz_convert(self.timezone), axis=1)
 
-        # replace full stops in column names for _ (full stops are problematic in .query())
-        fixture_df.columns = fixture_df.columns.str.replace('.', '_', regex=False)
 
         return fixture_df
 
@@ -135,6 +139,8 @@ class PlayHQ(object):
 
         club_upcoming_games = []
         for team in teams_df[['id', 'name']].to_records(index=False):
+            logging.debug(f"Extracting games for team: {team}")
+
             fixture_df = self.get_team_fixture_df(team[0])
 
             # filter wrt date interval

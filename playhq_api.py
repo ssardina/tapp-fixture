@@ -211,32 +211,35 @@ def to_teamsapp_schedule(games_df, desc_template=DESC_TAPP_DEFAULT):
         else:
             return competitors[1]['name']
 
-    games_tapps_df = games_df.loc[:, ['team_name', 'team_id', 'round.name', 'round.abbreviatedName']]
-    games_tapps_df['event_name'] = games_tapps_df['team_name'] + " - " + games_tapps_df['round.name']
-    games_tapps_df['opponent'] = games_df.apply(lambda x: extract_opponent(x['team_id'], x['competitors']), axis=1)
-    games_tapps_df['start_date'] = pd.to_datetime(games_df['schedule.date'])
-    games_tapps_df['end_date'] = pd.to_datetime(games_df['schedule.date'])
-    # team_apps_df['start_time'] = pd.to_datetime(club_upcoming_games_df['schedule.time'], format="%H:%M:%S").dt.time
-    games_tapps_df['start_time'] = pd.to_datetime(games_df['schedule.time']).dt.time
-    games_tapps_df['end_time'] = (pd.to_datetime(games_df['schedule.time']) + datetime.timedelta(minutes=GAME_DUR)).dt.time
-    games_tapps_df['location'] = games_df['venue.address.line1'] + ", " +  games_df['venue.address.suburb']
+    games_tapp_df = games_df.loc[:, ['team_name', 'team_id', 'round_name', 'round_abbreviatedName']]
+    games_tapp_df['event_name'] = games_tapp_df['team_name'] + " - " + games_tapp_df['round_name']
+    games_tapp_df['opponent'] = games_df.apply(lambda x: extract_opponent(x['team_id'], x['competitors']), axis=1)
+
+    games_tapp_df['schedule_timestamp'] = games_df['schedule_timestamp']
+    games_tapp_df['start_date'] = games_df['schedule_timestamp'].dt.date
+    games_tapp_df['end_date'] = games_tapp_df['start_date']
+    # # team_apps_df['start_time'] = pd.to_datetime(club_upcoming_games_df['schedule.time'], format="%H:%M:%S").dt.time
+    games_tapp_df['start_time'] = games_df['schedule_timestamp'].dt.time
+    games_tapp_df['end_time'] = (games_df['schedule_timestamp'] + datetime.timedelta(minutes=GAME_DUR)).dt.time
+
+    games_tapp_df['location'] = games_df['venue_address_line1'] + ", " +  games_df['venue_address_suburb']
     # team_apps_df['location'] = club_upcoming_games_df[['venue.address.line1', 'venue.address.suburb']].agg(','.join, axis=1)
-    games_tapps_df['access_groups'] = games_tapps_df['team_name']
-    games_tapps_df['rsvp'] = 1
-    games_tapps_df['comments'] = 1
-    games_tapps_df['attendance_tracking'] = 0
-    games_tapps_df['duty_roster'] = 1
-    games_tapps_df['ticketing'] = 0
-    games_tapps_df['reference_id'] = ""
+    games_tapp_df['access_groups'] = games_tapp_df['team_name']
+    games_tapp_df['rsvp'] = 1
+    games_tapp_df['comments'] = 1
+    games_tapp_df['attendance_tracking'] = 0
+    games_tapp_df['duty_roster'] = 1
+    games_tapp_df['ticketing'] = 0
+    games_tapp_df['reference_id'] = ""
 
 
-    games_tapps_df['venue'] = games_df['venue.name']
-    games_tapps_df['court'] = games_df['venue.surfaceName']
-    games_tapps_df['geo'] = "(" + games_df['venue.address.latitude'].astype(str) + "," + games_df['venue.address.longitude'].astype(str) + ")"
-    games_tapps_df['game_url'] = games_df.apply(lambda x : shorten_url(x['url']), axis=1)
-    games_tapps_df['grade_url'] = games_df.apply(lambda x : shorten_url(x['grade.url']), axis=1)
+    games_tapp_df['venue'] = games_df['venue_name']
+    games_tapp_df['court'] = games_df['venue_surfaceName']
+    games_tapp_df['geo'] = "(" + games_df['venue_address_latitude'].astype(str) + "," + games_df['venue_address_longitude'].astype(str) + ")"
+    games_tapp_df['game_url'] = games_df.apply(lambda x : shorten_url(x['url']), axis=1)
+    games_tapp_df['grade_url'] = games_df.apply(lambda x : shorten_url(x['grade_url']), axis=1)
 
-    games_tapps_df['description'] = games_tapps_df.apply(lambda x: desc_template.format(
+    games_tapp_df['description'] = games_tapp_df.apply(lambda x: desc_template.format(
                 opponent=x['opponent'],
                 venue=x['venue'],
                 court=x['court'],
@@ -247,11 +250,11 @@ def to_teamsapp_schedule(games_df, desc_template=DESC_TAPP_DEFAULT):
                 url_grade=x['grade_url']), axis=1
     )
 
-    return games_tapps_df
+    return games_tapp_df
 
 import calendar
 def next_day(cal_day=calendar.SATURDAY):
-    today = datetime.date.today() #reference point. 
+    today = datetime.date.today() #reference point.
     day = today + datetime.timedelta((cal_day-today.weekday()) % 7 )
     return day
 

@@ -1,4 +1,4 @@
-# Team App Scheduler Builder
+# Team App Game Schedule Builder
 
 This repo contains tools to build a fixture schedule CSV file ready to be imported into [TeamApp](https://www.teamapp.com) system for a club. Many sport clubs use [TeamApp](https://www.teamapp.com) to run the club's teams, which include distributing the game fixtures for each round.
 

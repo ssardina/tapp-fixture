@@ -1,11 +1,11 @@
 # Translate Coburg Bball Schedule to TeamApp CSV file
 
-This Python script reads either:
+This is the original system, used in 2021, to extract fixtures from  either:
 
-1. A 2007-Office 365 `.xlsx` spreadsheet containing the game schedule from [Coburg Basketball Association](https://coburgbasketball.org.au/); or
-2. The CSV report from [PlayHQ](http://playhq.com).
+1. a 2007-Office 365 `.xlsx` spreadsheet containing the game schedule from [Coburg Basketball Association](https://coburgbasketball.org.au/); or
+2. a CSV report from [PlayHQ](http://playhq.com); and
 
-and produces a CSV files ready to import into [TeamApp](https://www.teamapp.com) for generating either game events or schedules.
+produce CSV files ready to import into [TeamApp](https://www.teamapp.com) for generating either game events or schedules.
 
 The script was originally done for the [Brunswick Magic Club](https://www.brunswickmagic.com/) but it can extract games for any club.
 
@@ -13,11 +13,9 @@ The script was originally done for the [Brunswick Magic Club](https://www.brunsw
 
 ## Pre-requisites
 
-This script requires Python 3.9+. Set-up an environment for it:
+This script requires Python 3.9+ and the following modules:
 
 ```shell
-$ python3.10 -m venv ~/opt/virtual-envs/cba-script
-$ source ~/opt/virtual-envs/cba-script/bin/activate
 $ pip install openpyxl pandas coloredlogs
 ```
 

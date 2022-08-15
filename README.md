@@ -8,14 +8,8 @@ The script was originally done to support the [Brunswick Magic Basketball Club](
 
 As of July 2022, the system was simplified and moved to Python-based Jupyter notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and direct interaction with the [PlayHQ](https://bv.playhq.com/)'s Public [API](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs). This notebook does not require any manual work beforehand (e.g.,receiving a spreadsheet or exporting fixture from Pl and can produce CSV files that are ready to be imported into TeamApp.
 
-## How to use it
+## Pre-requisites
 
-First, to run the following is needed to run the notebook system:
-
-- PlayHQ keys to access the Public API:
-  - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
-  - `x-api-key`: provided by PlayHQ support.
-  - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
 - Python 3.8+ interpreter.
 - Jupyter notebooks.
 - Non-default packages: `pandas`, `json`, `pyshorteners`, `coloredlogs`:
@@ -24,9 +18,21 @@ First, to run the following is needed to run the notebook system:
     $ pip install pandas json pyshorteners coloredlogs
     ```
 
-Second, set all the constants at the top of the notebook. Those constants most often will need to be set once for the club/season.
+## How to use it
 
-Finally, to run it, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, checking on the way all is consistent, until the generation of `CSV` file ready to be up to TeamApp. 
+First, configure your club by editing file `config.py` with the following information:
+
+- PlayHQ keys to access the Public API:
+  - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
+  - `x-api-key`: provided by PlayHQ support.
+  - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
+- Season information, including the name as it appears in PlayHQ.
+
+These constants most often will need to be set once for the club/season.
+
+Finally, to run the system, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, checking on the way all is consistent.
+
+In the last steps, it will generate a `CSV` file ready to be up imported to TeamApp in the Schedule section.
 
 By default, the system extracts game for **next Saturday**, but this can be changed by setting constant `GAME_DATE`.
 
@@ -37,7 +43,7 @@ By default, the system extracts game for **next Saturday**, but this can be chan
 
 ## The original `cba2csv` system
 
-The original system, used in 2021-2022, can be found under folder [cba2csv/](cba2csv/). 
+The original system, used in 2021-2022, can be found under folder [cba2csv/](cba2csv/).
 
 That system is able to parse either:
 

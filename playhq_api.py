@@ -156,8 +156,11 @@ class PlayHQ(object):
                 fixture_df.insert(1, 'team_name', re.search("U.*", team[1]).group(0))
                 fixture_df.insert(2, 'team_id', team[0])
                 club_upcoming_games.append(fixture_df)
-        club_games_df = pd.concat(club_upcoming_games)
-        club_games_df.reset_index(drop=True, inplace=True)
+
+        club_games_df = None
+        if club_upcoming_games: # list is not empty
+            club_games_df = pd.concat(club_upcoming_games)
+            club_games_df.reset_index(drop=True, inplace=True)
 
         # club_upcoming_games_df.columns
         # (['id', 'status', 'url', 'createdAt', 'updatedAt', 'pool', 'competitors',

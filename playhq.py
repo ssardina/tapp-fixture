@@ -4,7 +4,6 @@ import pandas as pd
 import re
 from urllib.request import urlopen
 import urllib
-import pyshorteners # https://pyshorteners.readthedocs.io/en/latest/
 import datetime
 
 import logging
@@ -15,9 +14,7 @@ LOGGING_FMT = '%(asctime)s %(levelname)s %(message)s'
 # Set format and level of debug
 coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)
 
-
 API_URL=f'https://api.playhq.com/v1'
-
 GAMES_COLS = ['team_name', 'status', 'schedule_timestamp', 'venue_name']
 
 ###########################################################
@@ -174,90 +171,3 @@ class PlayHQ(object):
         #       dtype='object')
 
         return club_games_df
-
-
-
-
-
-
-###########################################################
-# TOOLS
-###########################################################
-DESC_TAPP_DEFAULT = """
-Opponent: {opponent}
-Venue: {venue} {court}
-Address: {address} {address_tips}
-Google Maps coord: https://maps.google.com/?q={coord}
-Check the game in PlayHQ: {url_game}
-Check the round in PlayHQ: {url_grade}
-"""
-GAME_DUR=45
-
-def print_json_pretty(data_json):
-    print(json.dumps(data_json, sort_keys=True, indent=4))
-
-
-# TinyURL shortener service
-def shorten_url(url):
-    s = pyshorteners.Shortener()
-    try:
-        return s.tinyurl.short(url)
-    except:
-        return s.dagd.short(url)
-
-
-
-def to_teamsapp_schedule(games_df, desc_template=DESC_TAPP_DEFAULT):
-    def extract_opponent(team_id, competitors):
-        if competitors[0]['id'] != team_id:
-            return competitors[0]['name']
-        else:
-            return competitors[1]['name']
-
-    games_tapp_df = games_df.loc[:, ['team_name', 'team_id', 'round_name', 'round_abbreviatedName']]
-    games_tapp_df['event_name'] = games_tapp_df['team_name'] + " - " + games_tapp_df['round_name']
-    games_tapp_df['opponent'] = games_df.apply(lambda x: extract_opponent(x['team_id'], x['competitors']), axis=1)
-
-    games_tapp_df['schedule_timestamp'] = games_df['schedule_timestamp']
-    games_tapp_df['start_date'] = games_df['schedule_timestamp'].dt.date
-    games_tapp_df['end_date'] = games_tapp_df['start_date']
-    # # team_apps_df['start_time'] = pd.to_datetime(club_upcoming_games_df['schedule.time'], format="%H:%M:%S").dt.time
-    games_tapp_df['start_time'] = games_df['schedule_timestamp'].dt.time
-    games_tapp_df['end_time'] = (games_df['schedule_timestamp'] + datetime.timedelta(minutes=GAME_DUR)).dt.time
-
-    games_tapp_df['location'] = games_df['venue_address_line1'] + ", " +  games_df['venue_address_suburb']
-    # team_apps_df['location'] = club_upcoming_games_df[['venue.address.line1', 'venue.address.suburb']].agg(','.join, axis=1)
-    games_tapp_df['access_groups'] = games_tapp_df['team_name']
-    games_tapp_df['rsvp'] = 1
-    games_tapp_df['comments'] = 1
-    games_tapp_df['attendance_tracking'] = 0
-    games_tapp_df['duty_roster'] = 1
-    games_tapp_df['ticketing'] = 0
-    games_tapp_df['reference_id'] = ""
-
-
-    games_tapp_df['venue'] = games_df['venue_name']
-    games_tapp_df['court'] = games_df['venue_surfaceName']
-    games_tapp_df['geo'] = "(" + games_df['venue_address_latitude'].astype(str) + "," + games_df['venue_address_longitude'].astype(str) + ")"
-    games_tapp_df['game_url'] = games_df.apply(lambda x : shorten_url(x['url']), axis=1)
-    games_tapp_df['grade_url'] = games_df.apply(lambda x : shorten_url(x['grade_url']), axis=1)
-
-    games_tapp_df['description'] = games_tapp_df.apply(lambda x: desc_template.format(
-                opponent=x['opponent'],
-                venue=x['venue'],
-                court=x['court'],
-                address=x['location'],
-                address_tips='',
-                coord=x['geo'],
-                url_game=x['game_url'],
-                url_grade=x['grade_url']), axis=1
-    )
-
-    return games_tapp_df
-
-import calendar
-def next_day(cal_day=calendar.SATURDAY):
-    today = datetime.date.today() #reference point.
-    day = today + datetime.timedelta((cal_day-today.weekday()) % 7 )
-    return day
-

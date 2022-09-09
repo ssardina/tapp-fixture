@@ -59,4 +59,3 @@ All clubs in PlayHQ: PLAYHQ_CLUB_SEASON
 
 # where to save the output files (e.g., fixtures)
 OUTPUT_PATH='fixture/'
-

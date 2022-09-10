@@ -1,5 +1,5 @@
 import json
-from sqlite3 import Timestamp
+# from sqlite3 import Timestamp
 import pandas as pd
 import re
 from urllib.request import urlopen
@@ -122,7 +122,7 @@ class PlayHQ(object):
         return fixture_df
 
 
-    def get_games(self, teams_df: pd.DataFrame, from_date : Timestamp, to_date : Timestamp=None, status=None) -> pd.DataFrame:
+    def get_games(self, teams_df: pd.DataFrame, from_date : pd.Timestamp, to_date : pd.Timestamp=None, status=None) -> pd.DataFrame:
         """ Build df with all teams's games with status (default is upcoming games)
 
         Args:

@@ -1,6 +1,6 @@
 # Team App Game Schedule Builder
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ssardina/tapp-fixture/blob/main/playhq_scrape.ipynb) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ssardina/tapp-fixture/HEAD?labpath=playhq_scrape.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ssardina/tapp-fixture/blob/main/playhq_scrape.ipynb) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ssardina/tapp-fixture/HEAD)
 
 This repo contains tools to build a fixture schedule CSV file ready to be imported into [TeamApp](https://www.teamapp.com) system for a club. Many sport clubs use [TeamApp](https://www.teamapp.com) to run the club's teams, which include distributing the game fixtures for each round.
 

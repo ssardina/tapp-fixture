@@ -35,7 +35,8 @@ if os.path.exists('x_api_key.txt'):
 SEASON = "Summer 2022/23"  # as it appears in PlayHQ
 PLAYHQ_CLUB_SEASON="https://bit.ly/bmbc-s22" # short link to PlayHQ team fixtures for the club
 DESC_BYE_TAPP = "Sorry, no game for the team in this round."
-DESC_TAPP = """RSVP is YES by default - if you cannot make it, please let your Team Manager know as soon as possible.
+DESC_TAPP = """RSVP mandatory for the game.
+
 Opponent: {opponent}
 Venue: {venue} ({court})
 Address: {address} {address_tips}
@@ -43,7 +44,8 @@ Google Maps coord: https://maps.google.com/?q={coord}
 
 - Please ensure you arrive early and ready.
 - Remember that shorts should have no pockets, players should not wear bracelets/watch as it is a risk of injury.
-- 45 min schedule with 18 min halves.
+- No food in the venue and pickup your rubbish.
+- Games will have 2x20 min halves.
 - Each team needs to provide a scorer. TMs, please consider a roster.
 - Players should not bring balls into the venue - game balls provided by Magic in coach's equipment bag.
 - Beginners refs will be wearing green shirts. Please support and respect them through a POSITIVE sideline behaviour.

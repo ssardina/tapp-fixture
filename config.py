@@ -32,8 +32,8 @@ if os.path.exists('x_api_key.txt'):
 #########################################
 # SEASON INFORMATION
 #########################################
-SEASON = "Winter 2022"  # as it appears in PlayHQ
-PLAYHQ_CLUB_SEASON="https://bit.ly/bmbc-w22" # short link to PlayHQ team fixtures for the club
+SEASON = "Summer 2022/23"  # as it appears in PlayHQ
+PLAYHQ_CLUB_SEASON="https://bit.ly/bmbc-s22" # short link to PlayHQ team fixtures for the club
 DESC_BYE_TAPP = "Sorry, no game for the team in this round."
 DESC_TAPP = """RSVP is YES by default - if you cannot make it, please let your Team Manager know as soon as possible.
 Opponent: {opponent}

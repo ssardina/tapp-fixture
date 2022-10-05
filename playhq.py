@@ -31,6 +31,7 @@ class PlayHQ(object):
 
     def get_json(self, key):
         FULL_URL=f"{API_URL}/{key}"
+        # print(FULL_URL)
         req = urllib.request.Request(FULL_URL)
         req.add_header('x-api-key', self.x_api_key)
         req.add_header('x-phq-tenant', self.x_tenant)
@@ -103,7 +104,8 @@ class PlayHQ(object):
         Returns:
             pd.DataFrame: a dataframe representing the fixture of the team
         """
-        data_json = self.get_json(f"teams/{team_id}/fixture") # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
+        # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
+        data_json = self.get_json(f"teams/{team_id}/fixture") 
         fixture_df = pd.json_normalize(data_json['data'])
 
         # replace full stops in column names for _ (full stops are problematic in .query())

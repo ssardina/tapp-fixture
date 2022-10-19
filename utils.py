@@ -51,7 +51,7 @@ def to_teamsapp_schedule(games_df : pd.DataFrame, desc_template=DESC_TAPP_DEFAUL
         pd.DataFrame: a dataframe representing CSV file for import into TeamApp Schedule
     """
     # fields used by TeamApp
-    TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing']
+    TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing'] + ['opponent', 'court']
 
     def extract_opponent(team_id, competitors):
         if competitors[0]['id'] != team_id:

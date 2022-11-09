@@ -1,3 +1,12 @@
+__author__ = "Sebastian Sardina"
+__copyright__ = "Copyright 2021-2022"
+__credits__ = []
+__license__ = "Apache-2.0 license"
+__email__ = "ssardina@gmail.com"
+# __version__ = "1.0.1"
+# __status__ = "Production"
+
+
 import json
 # from sqlite3 import Timestamp
 import pandas as pd

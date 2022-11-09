@@ -1,3 +1,11 @@
+__author__ = "Sebastian Sardina"
+__copyright__ = "Copyright 2021-2022"
+__credits__ = []
+__license__ = "Apache-2.0 license"
+__email__ = "ssardina@gmail.com"
+# __version__ = "1.0.1"
+# __status__ = "Production"
+
 import pyshorteners # https://pyshorteners.readthedocs.io/en/latest/
 import json
 import datetime

@@ -53,7 +53,76 @@ We start by **extracting the active seasons for the club** (using its organisati
 ```shell
 $ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/organisations/<org_id>/seasons
 
-{"data":[{"id":"a94981b4-75b7-429f-9005-915182ab6153","name":"Summer 2022/23","status":"UPCOMING","association":{"id":"e18085db-c6de-512f-b78b-53d253c65b32","name":"Coburg Basketball Association","url":"https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/e18085db","logo":{"sizes":[{"url":"https://res.cloudinary.com/playhq/image/upload/h_32,w_32/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":32,"height":32}},{"url":"https://res.cloudinary.com/playhq/image/upload/h_48,w_48/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":48,"height":48}},{"url":"https://res.cloudinary.com/playhq/image/upload/h_128,w_128/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":128,"height":128}},{"url":"https://res.cloudinary.com/playhq/image/upload/h_64,w_64/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":64,"height":64}},{"url":"https://res.cloudinary.com/playhq/image/upload/h_96,w_96/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":96,"height":96}},{"url":"https://res.cloudinary.com/playhq/image/upload/h_256,w_256/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg","dimensions":{"width":256,"height":256}}]}},"competition":{"id":"81fe8d81-d087-4a63-b4fb-87bc85e9d8ac","name":"Junior Domestic"},"createdAt":null,"updatedAt":null}],"metadata":{"hasMore":false,"nextCursor":null}}%
+{
+    "data": [
+        {
+            "id": "a94981b4-75b7-429f-9005-915182ab6153",
+            "name": "Summer 2022/23",
+            "status": "UPCOMING",
+            "association": {
+                "id": "e18085db-c6de-512f-b78b-53d253c65b32",
+                "name": "Coburg Basketball Association",
+                "url": "https://www.playhq.com/basketball-victoria/org/coburg-basketball-association/e18085db",
+                "logo": {
+                    "sizes": [
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_32,w_32/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 32,
+                                "height": 32
+                            }
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_48,w_48/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 48,
+                                "height": 48
+                            }
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_128,w_128/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 128,
+                                "height": 128
+                            }
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_64,w_64/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 64,
+                                "height": 64
+                            }
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_96,w_96/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 96,
+                                "height": 96
+                            }
+                        },
+                        {
+                            "url": "https://res.cloudinary.com/playhq/image/upload/h_256,w_256/v1/production/bv/e18085db-c6de-512f-b78b-53d253c65b32/1645069189211/logo.jpg",
+                            "dimensions": {
+                                "width": 256,
+                                "height": 256
+                            }
+                        }
+                    ]
+                }
+            },
+            "competition": {
+                "id": "81fe8d81-d087-4a63-b4fb-87bc85e9d8ac",
+                "name": "Junior Domestic"
+            },
+            "createdAt": null,
+            "updatedAt": null
+        }
+    ],
+    "metadata": {
+        "hasMore": false,
+        "nextCursor": null
+    }
+}
 ```
 
 Season Summer 22/23 has id `a94981b4-75b7-429f-9005-915182ab6153`. We can then **extract all the teams** registered for that season:

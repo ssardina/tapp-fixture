@@ -2,8 +2,7 @@ import json
 # from sqlite3 import Timestamp
 import pandas as pd
 import re
-from urllib.request import urlopen
-import urllib
+import urllib   # https://docs.python.org/3/library/urllib.request.html
 import datetime
 
 import logging
@@ -29,14 +28,21 @@ class PlayHQ(object):
         self.timezone = timezone
 
 
-    def get_json(self, key):
-        FULL_URL=f"{API_URL}/{key}"
+    def get_json(self, key, params=""):
+        #  params eg., {'spam': 1, 'eggs': 2, 'bacon': 0}
+        if params != "":
+            params = urllib.parse.urlencode(params)
+            url_req=f"{API_URL}/{key}?{params}"
+        else:
+            url_req=f"{API_URL}/{key}"
+
         # print(FULL_URL)
-        req = urllib.request.Request(FULL_URL)
+        # https://realpython.com/urllib-request/
+        req = urllib.request.Request(url_req)
         req.add_header('x-api-key', self.x_api_key)
         req.add_header('x-phq-tenant', self.x_tenant)
 
-        content = urlopen(req).read()
+        content = urllib.request.urlopen(req).read()
         data_json = json.loads(content)
 
         return data_json
@@ -61,11 +67,25 @@ class PlayHQ(object):
         return season_id
 
     def get_season_teams(self, season_id):
-        data_json = self.get_json(f"seasons/{season_id}/teams")
-        # print(data_json)
-        # print(json.dumps(data_json, sort_keys=True, indent=4))
+        has_more = True
+        params = ""
 
-        teams_df = pd.json_normalize(data_json['data'])
+        teams_dfs = []
+        while has_more:
+            data_json = self.get_json(f"seasons/{season_id}/teams", params)
+            # print(data_json)
+            # print(json.dumps(data_json, sort_keys=True, indent=4))
+            teams_dfs.append(pd.json_normalize(data_json['data']))
+
+            # check for this data:
+            #   "metadata":{"hasMore":true,"nextCursor":"MjAw"}}%
+            has_more = data_json['metadata']['hasMore']
+            if has_more:
+                params = { "cursor": data_json['metadata']['nextCursor']}
+
+
+        # put al teams together for the season and extrac club's teams
+        teams_df = pd.concat(teams_dfs)
         club_teams_df = teams_df.loc[teams_df['club.id'] == self.org_id]
 
         columns = ['id', 'name', 'grade.id', 'grade.name', 'grade.url']

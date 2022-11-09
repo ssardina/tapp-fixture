@@ -8,3 +8,4 @@ fixture
 *.cfg
 test.json
 playhq-json-examples/
+test_out.json

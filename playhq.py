@@ -28,6 +28,42 @@ GAMES_COLS = ['team_name', 'status', 'schedule_timestamp', 'venue_name']
 ###########################################################
 # PLAY-HQ MAIN CLASS
 ###########################################################
+
+class ResponsePHQ:
+    def __init__(self, key, x_api_key, x_tenant):
+        self.url = f"{API_URL}/{key}"
+        self.has_more = True
+        self.cursor = None
+        self.key = key
+        self.x_api_key = x_api_key
+        self.x_tenant = x_tenant
+
+    def __iter__(self):
+        print(type(self.has_more))
+        while self.has_more:
+            url_req = self.url
+            if self.cursor is not None:
+                params = urllib.parse.urlencode({ "cursor": self.cursor})
+                url_req = url_req + f"?{params}"
+
+            print(url_req)
+            req = urllib.request.Request(url_req)
+            req.add_header('x-api-key', self.x_api_key)
+            req.add_header('x-phq-tenant', self.x_tenant)
+
+            content = urllib.request.urlopen(req).read()
+            data_json = json.loads(content)
+
+            self.has_more = data_json['metadata']['hasMore']
+            print(type(self.has_more))
+            if self.has_more:
+                self.cursor = data_json['metadata']['nextCursor']
+
+            yield data_json
+        raise StopIteration
+
+
+
 class PlayHQ(object):
     def __init__(self, org_name, org_id, x_api_key, x_tenant, timezone) -> None:
         self.org_name = org_name
@@ -37,11 +73,36 @@ class PlayHQ(object):
         self.timezone = timezone
 
 
-    def get_json(self, key, params=""):
-        #  params eg., {'spam': 1, 'eggs': 2, 'bacon': 0}
-        if params != "":
-            params = urllib.parse.urlencode(params)
-            url_req=f"{API_URL}/{key}?{params}"
+    # def get_json(self, key, cursor=None):
+    #     if cursor is not None:
+    #         params = { "cursor": cursor}
+    #         cursor = urllib.parse.urlencode(params)
+    #         url_req=f"{API_URL}/{key}?{cursor}"
+    #     else:
+    #         url_req=f"{API_URL}/{key}"
+
+    #     # print(FULL_URL)
+    #     # https://realpython.com/urllib-request/
+    #     req = urllib.request.Request(url_req)
+    #     req.add_header('x-api-key', self.x_api_key)
+    #     req.add_header('x-phq-tenant', self.x_tenant)
+
+    #     content = urllib.request.urlopen(req).read()
+    #     data_json = json.loads(content)
+
+    #     cursor = None
+    #     if data_json['metadata']['hasMore']:
+    #         cursor = data_json['metadata']['nextCursor']
+
+    #     return data_json, cursor
+
+    def get_json(self, key, cursor=None):
+        return iter(ResponsePHQ(key, self.x_api_key, self.x_tenant))
+
+        if cursor is not None:
+            params = { "cursor": cursor}
+            cursor = urllib.parse.urlencode(params)
+            url_req=f"{API_URL}/{key}?{cursor}"
         else:
             url_req=f"{API_URL}/{key}"
 
@@ -54,11 +115,15 @@ class PlayHQ(object):
         content = urllib.request.urlopen(req).read()
         data_json = json.loads(content)
 
-        return data_json
+        cursor = None
+        if data_json['metadata']['hasMore']:
+            cursor = data_json['metadata']['nextCursor']
+
+        return data_json, cursor
 
 
     def get_season_id(self, season: str):
-        data_json = self.get_json(f"organisations/{self.org_id}/seasons")
+        data_json, _ = self.get_json(f"organisations/{self.org_id}/seasons")
         # print(data_json)
         # print(json.dumps(data_json, sort_keys=True, indent=4))
 
@@ -76,24 +141,14 @@ class PlayHQ(object):
         return season_id
 
     def get_season_teams(self, season_id):
-        has_more = True
-        params = ""
-
-        teams_dfs = []
-        while has_more:
-            data_json = self.get_json(f"seasons/{season_id}/teams", params)
+        teams_dfs = [self.get_json(f"seasons/{season_id}/teams")]
+        while cursor is not None:
+            data_json, cursor = self.get_json(f"seasons/{season_id}/teams", cursor)
             # print(data_json)
             # print(json.dumps(data_json, sort_keys=True, indent=4))
             teams_dfs.append(pd.json_normalize(data_json['data']))
 
-            # check for this data:
-            #   "metadata":{"hasMore":true,"nextCursor":"MjAw"}}%
-            has_more = data_json['metadata']['hasMore']
-            if has_more:
-                params = { "cursor": data_json['metadata']['nextCursor']}
-
-
-        # put al teams together for the season and extrac club's teams
+        # put all teams together for the season and extract club's teams
         teams_df = pd.concat(teams_dfs)
         club_teams_df = teams_df.loc[teams_df['club.id'] == self.org_id]
 

@@ -12,7 +12,6 @@ import datetime
 import calendar
 import pandas as pd
 
-from config import *
 
 ###########################################################
 # TOOLS
@@ -46,6 +45,9 @@ Google Maps coord: https://maps.google.com/?q={coord}
 Check the game in PlayHQ: {url_game}
 Check the round in PlayHQ: {url_grade}
 """
+DESC_BYE_TAPP_DEFAULT = "Sorry, no game for the team in this round."
+
+
 TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing']
 
 def to_teamsapp_schedule(games_df : pd.DataFrame, desc_template=DESC_TAPP_DEFAULT, game_duration=45):
@@ -111,7 +113,7 @@ def to_teamsapp_schedule(games_df : pd.DataFrame, desc_template=DESC_TAPP_DEFAUL
     return games_tapps_df
 
 
-def build_teamsapp_bye_schedule(teams: list, date: datetime):
+def build_teamsapp_bye_schedule(teams: list, date: datetime, desc_bye=DESC_BYE_TAPP_DEFAULT):
 
     if teams is None or len(teams) == 0:  # there are BYE games
         return None
@@ -125,7 +127,7 @@ def build_teamsapp_bye_schedule(teams: list, date: datetime):
     bye_teams_df['end_date'] = date
     bye_teams_df['start_time'] = datetime.time(hour=0,minute=0,second=0)
     bye_teams_df['end_time'] = datetime.time(hour=0,minute=0,second=0)
-    bye_teams_df['description'] = DESC_BYE_TAPP
+    bye_teams_df['description'] = desc_bye
     bye_teams_df['location'] = ""
     bye_teams_df['venue'] = "BYE"
 

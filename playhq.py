@@ -39,14 +39,12 @@ class ResponsePHQ:
         self.x_tenant = x_tenant
 
     def __iter__(self):
-        print(type(self.has_more))
         while self.has_more:
             url_req = self.url
             if self.cursor is not None:
                 params = urllib.parse.urlencode({ "cursor": self.cursor})
                 url_req = url_req + f"?{params}"
 
-            print(url_req)
             req = urllib.request.Request(url_req)
             req.add_header('x-api-key', self.x_api_key)
             req.add_header('x-phq-tenant', self.x_tenant)
@@ -55,14 +53,10 @@ class ResponsePHQ:
             data_json = json.loads(content)
 
             self.has_more = data_json['metadata']['hasMore']
-            print(type(self.has_more))
             if self.has_more:
                 self.cursor = data_json['metadata']['nextCursor']
 
             yield data_json
-        raise StopIteration
-
-
 
 class PlayHQ(object):
     def __init__(self, org_name, org_id, x_api_key, x_tenant, timezone) -> None:
@@ -72,78 +66,26 @@ class PlayHQ(object):
         self.x_tenant = x_tenant
         self.timezone = timezone
 
-
-    # def get_json(self, key, cursor=None):
-    #     if cursor is not None:
-    #         params = { "cursor": cursor}
-    #         cursor = urllib.parse.urlencode(params)
-    #         url_req=f"{API_URL}/{key}?{cursor}"
-    #     else:
-    #         url_req=f"{API_URL}/{key}"
-
-    #     # print(FULL_URL)
-    #     # https://realpython.com/urllib-request/
-    #     req = urllib.request.Request(url_req)
-    #     req.add_header('x-api-key', self.x_api_key)
-    #     req.add_header('x-phq-tenant', self.x_tenant)
-
-    #     content = urllib.request.urlopen(req).read()
-    #     data_json = json.loads(content)
-
-    #     cursor = None
-    #     if data_json['metadata']['hasMore']:
-    #         cursor = data_json['metadata']['nextCursor']
-
-    #     return data_json, cursor
-
     def get_json(self, key, cursor=None):
         return iter(ResponsePHQ(key, self.x_api_key, self.x_tenant))
 
-        if cursor is not None:
-            params = { "cursor": cursor}
-            cursor = urllib.parse.urlencode(params)
-            url_req=f"{API_URL}/{key}?{cursor}"
-        else:
-            url_req=f"{API_URL}/{key}"
-
-        # print(FULL_URL)
-        # https://realpython.com/urllib-request/
-        req = urllib.request.Request(url_req)
-        req.add_header('x-api-key', self.x_api_key)
-        req.add_header('x-phq-tenant', self.x_tenant)
-
-        content = urllib.request.urlopen(req).read()
-        data_json = json.loads(content)
-
-        cursor = None
-        if data_json['metadata']['hasMore']:
-            cursor = data_json['metadata']['nextCursor']
-
-        return data_json, cursor
-
-
     def get_season_id(self, season: str):
-        data_json, _ = self.get_json(f"organisations/{self.org_id}/seasons")
-        # print(data_json)
-        # print(json.dumps(data_json, sort_keys=True, indent=4))
-
         # get competition id
         season_id = None
         competition_id = None
-        for x in data_json['data']:
-            if x['name'] == season:
-                season_id = x['id']
-                competition_id = x['competition']['id']
+        for data_json in self.get_json(f"organisations/{self.org_id}/seasons"):
+            # print(json.dumps(data_json, sort_keys=True, indent=4))
 
-        logging.debug(f'Seasons id for season *{season}*: {season_id}')
-        logging.debug(f'Competition id for season *{season}*: {competition_id}')
-
-        return season_id
+            for x in data_json['data']:
+                if x['name'] == season:
+                    season_id = x['id']
+                    # competition_id = x['competition']['id']
+                    logging.debug(f'Seasons *{season}* found with id: {season_id}')
+                    return season_id
 
     def get_season_teams(self, season_id):
-        teams_dfs = [self.get_json(f"seasons/{season_id}/teams")]
-        while cursor is not None:
-            data_json, cursor = self.get_json(f"seasons/{season_id}/teams", cursor)
+        teams_dfs = []
+        for data_json in self.get_json(f"seasons/{season_id}/teams"):
             # print(data_json)
             # print(json.dumps(data_json, sort_keys=True, indent=4))
             teams_dfs.append(pd.json_normalize(data_json['data']))
@@ -161,8 +103,10 @@ class PlayHQ(object):
 
         return club_teams_df
 
-    def get_team_fixture_df(self, team_id) -> pd.DataFrame:
-        """Extract a df that encodes the whole fixture of a team from the JSON data
+    def get_team_fixture(self, team_id) -> pd.DataFrame:
+        """Extract a df that encodes the whole fixture of a team from the JSON data.
+        Note: Games can only be obtained per team in the public API.
+        It is not possible to list all games of organisation
 
         The original dataframe converted from the json data has these columns:
 
@@ -189,8 +133,10 @@ class PlayHQ(object):
             pd.DataFrame: a dataframe representing the fixture of the team
         """
         # https://docs.playhq.com/tech#tag/Teams/paths/~1v1~1teams~1:id~1fixture/get
-        data_json = self.get_json(f"teams/{team_id}/fixture") 
-        fixture_df = pd.json_normalize(data_json['data'])
+        fixture_dfs = []
+        for data_json in self.get_json(f"teams/{team_id}/fixture"):
+            fixture_dfs.append(pd.json_normalize(data_json['data']))
+        fixture_df = pd.concat(fixture_dfs)
 
         # replace full stops in column names for _ (full stops are problematic in .query())
         fixture_df.columns = fixture_df.columns.str.replace('.', '_', regex=False)
@@ -224,7 +170,7 @@ class PlayHQ(object):
         for team in teams_df[['id', 'name']].to_records(index=False):
             logging.debug(f"Extracting games for team: {team}")
 
-            fixture_df = self.get_team_fixture_df(team[0])
+            fixture_df = self.get_team_fixture(team[0])
 
             # filter wrt date interval
             fixture_df = fixture_df.query('schedule_timestamp >= @from_date and schedule_timestamp <= @to_date')

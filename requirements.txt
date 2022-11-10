@@ -2,3 +2,4 @@ pandas
 datetime
 coloredlogs
 pyshorteners
+dtale

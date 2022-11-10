@@ -21,8 +21,16 @@ def next_day(cal_day=calendar.SATURDAY):
     day = today + datetime.timedelta((cal_day-today.weekday()) % 7 )
     return day
 
+def pretty_date(date : datetime.datetime):
+    return date.strftime("%A %B %d, %Y (%Y/%m/%d)")
+
+def compact_date(date : datetime.datetime):
+    return date.strftime('%Y_%m_%d')
+
+
 def print_json_pretty(data_json):
     print(json.dumps(data_json, sort_keys=True, indent=4))
+
 
 
 # TinyURL shortener service
@@ -141,3 +149,5 @@ def build_teamsapp_bye_schedule(teams: list, date: datetime, desc_bye=DESC_BYE_T
     bye_teams_df = bye_teams_df[TAPP_COLS_CSV]
 
     return bye_teams_df
+
+

@@ -59,12 +59,13 @@ class ResponsePHQ:
             yield data_json
 
 class PlayHQ(object):
-    def __init__(self, org_name, org_id, x_api_key, x_tenant, timezone) -> None:
+    def __init__(self, org_name, org_id, x_api_key, x_tenant, timezone, tapp_team_name) -> None:
         self.org_name = org_name
         self.org_id = org_id
         self.x_api_key = x_api_key
         self.x_tenant = x_tenant
         self.timezone = timezone
+        self.tapp_team_name = tapp_team_name
 
     def get_json(self, key, cursor=None):
         return iter(ResponsePHQ(key, self.x_api_key, self.x_tenant))
@@ -182,7 +183,7 @@ class PlayHQ(object):
                 logging.info(f"No games for team: {team[1]}")
             else:
                 logging.info(f"Games extracted for team: {team[1]}")
-                fixture_df.insert(1, 'team_name', re.search("U.*", team[1]).group(0))
+                fixture_df.insert(1, 'team_name', self.tapp_team_name(team[1])) # translate the team name
                 fixture_df.insert(2, 'team_id', team[0])
                 club_upcoming_games.append(fixture_df)
 

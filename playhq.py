@@ -98,8 +98,8 @@ class PlayHQ(object):
         club_teams_df = club_teams_df[columns]
         club_teams_df.dropna(inplace=True)
         club_teams_df['age'] = club_teams_df['name'].apply(lambda x: re.search("U(\d*)", x).group(1) )
-        club_teams_df.sort_values('age', ascending=False, inplace=True)
-        club_teams_df.reset_index(inplace=True, drop=True)
+        # club_teams_df = club_teams_df.sort_values('age', ascending=False)
+        # club_teams_df.reset_index(inplace=True, drop=True)
 
         return club_teams_df
 

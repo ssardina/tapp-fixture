@@ -1,43 +1,50 @@
 # Team App Game Schedule Builder
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ssardina/tapp-fixture/blob/main/playhq_scrape.ipynb) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ssardina/tapp-fixture/HEAD)
+This repo contains tools to scrape [PlayHQ](https://www.playhq.com) fixtures via its [REST API](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs), and produce CSV files for import as Schedule in a club's [TeamApp](https://www.teamapp.com) account. Using this, one can populate the schedule section for the next round or many rounds of games in minutes and with almost no manual work.
 
-This repo contains tools to build a fixture schedule CSV file ready to be imported into [TeamApp](https://www.teamapp.com) system for a club. Many sport clubs use [TeamApp](https://www.teamapp.com) to run the club's teams, which include distributing the game fixtures for each round.
-
-Entering each game into [TeamApp](https://www.teamapp.com) could become a very demanding and error-prone task as soon as the club has a few teams. This system will allow you to populate the schedule section for the next round of games in minutes and with almost no manual work. Hopefully! :-)
+**Note:**  before July 2022, the CSV file was built using the [`cba2csv`](cba2csv) form spreadsheets provided by CBA. Using PlayHQ REST API provides a much easier and robust solution, so this is not used anymore.
 
 The script was originally done to support the [Brunswick Magic Basketball Club](https://www.brunswickmagic.com/) (Melbourne, Australia), from [Coburg Basketball Association (CBA)](https://coburgbasketball.org.au/). However, it any club competing in CBA, or more generally under the [PlayHQ](https://bv.playhq.com/) system (even for other sports), should be able to use it.
 
-As of July 2022, the system was simplified and moved to Python-based Jupyter notebook that extracts upcoming games from [PlayHQ](https://bv.playhq.com/)'s Public [REST API](https://support.playhq.com/hc/en-au/sections/4405422358297-PlayHQ-APIs). This notebook does not require any manual work beforehand (e.g., receiving ad-hoc spreadsheets or exporting fixtures from PlayHQ web interface).
+## Pre-requisites & Setup
 
-## Pre-requisites
+Runs on Python 3.8+ as a Jupyter notebook. 
 
-Runs on Python 3.8+ as a Jupyter notebook. Packages used (e.g., `pandas`, `json`, `pyshorteners`, `coloredlogs`) can be installed as follows:
+Packages used (e.g., `pandas`, `json`, `pyshorteners`, `coloredlogs`) can be installed as follows:
 
 ```shell
 $ pip install -r requirements.txt
 ```
+### Team Names and Access Groups
 
-The system assumes _team names_ match _access groups_ names, and these are the names registered in PlayHQ with the club's name removed. For example, for team
-"`Magics U14 Boys Gold`", TeamApp should include a team and access group called "`U14 Boys Gold`". This is important because the CSV file generated will include such team and access group names.
+The system assumes _team names_ match _access groups_ names in the TeamApp account of the club. This is important because the CSV file generated will include such team and access group names.
 
-## How to use it
+These names generally be very similar to the ones registered in PlayHQ. For example, PlayHQ may have a team "`Magics U14 Boys Gold`", and the club may just use "`U14 Boys Gold`" for the corresponding team AND access group names. A function `tapp_team_name(team_name)` will translate PlayHQ team names to those names in TeamApp (read below).
 
-First, configure your club by editing file `config.py` with the following information:
+### Club Configuration File
 
-- PlayHQ keys to access the Public API:
+The first thing to set-up, once per season, is the club configuration file, which defines a few variables.
+
+Make a copy of the template [`config](config_template.py), and complete it according to the Club's details.
+
+Of particular importance are PlayHQ keys to access the Public API:
   - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
   - `x-api-key`: provided by PlayHQ support.
   - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
-- Season information, including the name as it appears in PlayHQ.
 
-These constants most often will need to be set once for the club/season.
+There are also variables to set regarding the season name (as per PlayHQ), and text templates to use to populate descriptions fields in TeamApp.
 
-Finally, to run the system, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and run the system cell by cell, checking on the way all is consistent.
+Finally, function `tapp_team_name(team_name)` needs to be implemented to map PlayHQ team names, to the names used in TeamApp for the teams and access groups (remember they need to match one-to-one!).
+
+This configuration file will be desgined at the start of the season and remained fixed.
+
+## How to use it
+
+To run the system, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and change/configure the first section, with the name of the configuration file of the club and the interval dates you want to extract games from.
+
+Then, run the system cell by cell, checking on the way all is consistent.
 
 In the last steps, it will generate a `CSV` file ready to be up imported to TeamApp in the Schedule section.
-
-By default, the system extracts game for **next Saturday**, but this can be changed by setting constant `GAME_DATE`.
 
 ## PlayHQ REST API
 
@@ -193,35 +200,29 @@ $ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/
         }
     ],
     "metadata": {
-        "hasMore": false,
-        "nextCursor": null
+        "hasMore": true,
+        "nextCursor": "MaMx"
     }
 }
 ```
 
 The above JSON reply has been formatted for better legibility.
 
-The above interaction is done in Python via the following function:
+The last `metadata` information of each JSON reply, states whether there are more follow-up pages using a cursor parameter. To get the next page:
 
-```python
-from urllib.request import urlopen
-
-API_URL=f'https://api.playhq.com/v1'
-
-def get_json(self, key):
-    FULL_URL=f"{API_URL}/{key}"
-    # print(FULL_URL)
-    req = urllib.request.Request(FULL_URL)
-    req.add_header('x-api-key', self.x_api_key)
-    req.add_header('x-phq-tenant', self.x_tenant)
-
-    content = urlopen(req).read()
-    data_json = json.loads(content)
-
-    return data_json
+```
+$ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/seasons/a94981b4-75b7-429f-9005-915182ab6153/teams?cursor=MaMx
 ```
 
+The above interaction is done in Python via function `get_json(self, key)`, which provides an iterator with the various response pages, one by one.
 
+## Other info
+
+To access the games in the PlayHQ admin system use:
+
+```
+https://bv.playhq.com/org/{ORG_ID}/games?date=<YY_MM_DD>
+```
 
 
 

@@ -28,6 +28,22 @@ coloredlogs.install(level=LOGGING_LEVEL, fmt=LOGGING_FMT)
 API_URL=f'https://api.playhq.com/v1'
 GAMES_COLS = ['team_name', 'status', 'schedule_timestamp', 'venue_name']
 
+########################################################################
+# TEAMS APP TRANSLATIONS
+########################################################################
+TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing']
+
+DESC_BYE_TAPP_DEFAULT = "Sorry, no game for the team in this round."
+DESC_TAPP_DEFAULT = """
+Opponent: {opponent}
+Venue: {venue} {court}
+Address: {address} {address_tips}
+Google Maps coord: https://maps.google.com/?q={coord}
+Check the game in PlayHQ: {url_game}
+Check the round in PlayHQ: {url_grade}
+"""
+
+
 ###########################################################
 # PLAY-HQ MAIN CLASS
 ###########################################################
@@ -213,22 +229,6 @@ class PlayHQ(object):
 
         return club_games_df
 
-
-    ########################################################################
-    # TEAMS APP TRANSLATIONS
-    ########################################################################
-    TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing']
-    DESC_BYE_TAPP_DEFAULT = "Sorry, no game for the team in this round."
-    DESC_TAPP_DEFAULT = """
-    Opponent: {opponent}
-    Venue: {venue} {court}
-    Address: {address} {address_tips}
-    Google Maps coord: https://maps.google.com/?q={coord}
-    Check the game in PlayHQ: {url_game}
-    Check the round in PlayHQ: {url_grade}
-    """
-
-
     def to_teamsapp_schedule(self, games_df : pd.DataFrame, desc_template=DESC_TAPP_DEFAULT, game_duration=45) -> pd.DataFrame:
         """Translates a game fixture table from PlayHQ data to the format used in TeamApp for CSV Schedule import
 
@@ -240,9 +240,6 @@ class PlayHQ(object):
         Returns:
             pd.DataFrame: a dataframe representing CSV file for import into TeamApp Schedule
         """
-        # fields used by TeamApp
-        TAPP_COLS_CSV = ['event_name', 'team_name', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'venue', 'location', 'access_groups', 'rsvp', 'comments', 'attendance_tracking', 'duty_roster', 'ticketing'] + ['opponent', 'court']
-
         def extract_opponent(team_id, competitors):
             if competitors[0]['id'] != team_id:
                 return competitors[0]['name']
@@ -294,7 +291,7 @@ class PlayHQ(object):
         )
 
         # return the dataframe with just the columns that TeamApp uses for CSV import
-        games_tapps_df = games_tapps_df.loc[:, TAPP_COLS_CSV]
+        games_tapps_df = games_tapps_df.loc[:, TAPP_COLS_CSV + ['opponent', 'court']]
         return games_tapps_df
 
     def build_teamsapp_bye_schedule(self, teams: list, date: datetime, desc_bye=DESC_BYE_TAPP_DEFAULT) -> pd.DataFrame:

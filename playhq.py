@@ -39,10 +39,10 @@ Opponent: {opponent}
 Venue: {venue} {court}
 Address: {address} {address_tips}
 Google Maps coord: https://maps.google.com/?q={coord}
+Waze coord: https://www.waze.com/live-map/directions?to=ll.{coord[0]}%2C{coord[1]}
 Check the game in PlayHQ: {url_game}
 Check the round in PlayHQ: {url_grade}
 """
-
 
 ###########################################################
 # PLAY-HQ MAIN CLASS
@@ -275,7 +275,8 @@ class PlayHQ(object):
 
         games_tapps_df['venue'] = games_df['venue_name']
         games_tapps_df['court'] = games_df['venue_surfaceName']
-        games_tapps_df['geo'] = "(" + games_df['venue_address_latitude'].astype(str) + "," + games_df['venue_address_longitude'].astype(str) + ")"
+        games_tapps_df['lat'] = games_df['venue_address_latitude']
+        games_tapps_df['lon'] = games_df['venue_address_longitude']
         games_tapps_df['game_url'] = games_df.apply(lambda x : utils.shorten_url(x['url']), axis=1)
         games_tapps_df['grade_url'] = games_df.apply(lambda x : utils.shorten_url(x['grade_url']), axis=1)
 
@@ -285,7 +286,8 @@ class PlayHQ(object):
                     court=x['court'],
                     address=x['location'],
                     address_tips='',
-                    coord=x['geo'],
+                    lat=x['lat'],
+                    lon = x['lon'],
                     url_game=x['game_url'],
                     url_grade=x['grade_url']), axis=1
         )

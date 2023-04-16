@@ -159,9 +159,15 @@ class PlayHQ(object):
             fixture_dfs.append(pd.json_normalize(data_json['data']))
         fixture_df = pd.concat(fixture_dfs)
 
+        # Drop games that have no date (some games are not yet scheduled fully)
+        #   maybe we can check using the id and GET games: https://docs.playhq.com/tech#tag/Games/paths/~1partner~1v1~1games~1:id~1summary/get
+        ids_empty_date = fixture_df[fixture_df['schedule.date'] == '']['id'].to_list()
+        if ids_empty_date:
+            logging.warning(f"Games with ids {ids_empty_date} have no date. They will be dropped")
+            fixture_df = fixture_df[fixture_df['schedule.date'] != '']
+
         # replace full stops in column names for _ (full stops are problematic in .query())
         fixture_df.columns = fixture_df.columns.str.replace('.', '_', regex=False)
-
 
         fixture_df['createdAt'] = pd.to_datetime(fixture_df['createdAt']).dt.tz_convert(self.timezone)
         fixture_df['updatedAt'] = pd.to_datetime(fixture_df['updatedAt']).dt.tz_convert(self.timezone)

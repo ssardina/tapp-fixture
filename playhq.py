@@ -1,5 +1,5 @@
 __author__ = "Sebastian Sardina"
-__copyright__ = "Copyright 2021-2022"
+__copyright__ = "Copyright 2021-2023"
 __credits__ = []
 __license__ = "Apache-2.0 license"
 __email__ = "ssardina@gmail.com"

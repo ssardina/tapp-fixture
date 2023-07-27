@@ -90,25 +90,27 @@ class PlayHQ(object):
     def get_json(self, key, cursor=None):
         return iter(ResponsePHQ(key, self.x_api_key, self.x_tenant))
 
-    def get_season_id(self, season: str):
+    def get_season_name(self, season_id: str):
+        """Given the season id, search for its name"""
         # get competition id
-        season_id = None
-        competition_id = None
         for data_json in self.get_json(f"organisations/{self.org_id}/seasons"):
             # print(json.dumps(data_json, sort_keys=True, indent=4))
 
             for x in data_json['data']:
-                if x['name'] == season:
-                    season_id = x['id']
-                    # competition_id = x['competition']['id']
-                    logging.debug(f'Seasons *{season}* found with id: {season_id}')
-                    return season_id
+                if x['id'] == season_id:
+                    logging.debug(f"Seasons *{season_id}* found with name: {x['competition']['name']}")
+                    return x['competition']['name']
 
     def get_season_teams(self, season_id):
         teams_dfs = []
         for data_json in self.get_json(f"seasons/{season_id}/teams"):
             # print(data_json)
             # print(json.dumps(data_json, sort_keys=True, indent=4))
+
+            # This is a hack as sometimes PLAYHQ yields a list of non-existent teams at the end, with no club
+            # stop there or it will keep going forever!!
+            if data_json['data'][0]['club'] is None:
+                break
             teams_dfs.append(pd.json_normalize(data_json['data']))
 
         # put all teams together for the season and extract club's teams

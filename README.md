@@ -15,6 +15,7 @@ Packages used (e.g., `pandas`, `json`, `pyshorteners`, `coloredlogs`) can be ins
 ```shell
 $ pip install -r requirements.txt
 ```
+
 ### Team Names and Access Groups
 
 The system assumes _team names_ match _access groups_ names in the TeamApp account of the club. This is important because the CSV file generated will include such team and access group names.
@@ -28,15 +29,16 @@ The first thing to set-up, once per season, is the club configuration file, whic
 Make a copy of the template [`config](config_template.py), and complete it according to the Club's details.
 
 Of particular importance are PlayHQ keys to access the Public API:
-  - Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
-  - `x-api-key`: provided by PlayHQ support.
-  - `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
+
+- Organization id. (e.g., "`8c4d5431-eaa5-4644-82ac-992abe224b88`")
+- `x-api-key`: provided by PlayHQ support.
+- `x-tenant`: the id of the sport (e.g., `bv` for Basketball Victoria).
 
 There are also variables to set regarding the season name (as per PlayHQ), and text templates to use to populate descriptions fields in TeamApp.
 
 Finally, function `tapp_team_name(team_name)` needs to be implemented to map PlayHQ team names, to the names used in TeamApp for the teams and access groups (remember they need to match one-to-one!).
 
-This configuration file will be desgined at the start of the season and remained fixed.
+This configuration file will be designed at the start of the season and remained fixed.
 
 ## How to use it
 
@@ -55,10 +57,17 @@ This system uses PlayHQ public REST API:
 
 As stated above, one needs the organization club's id (public), together with the `x-api-key` (private) and `x-tenant` (the id of the sport, `bv` for Basketball Victoria). In addition, to get the fixtures one would need the season name as it appears in PlayHQ (e.g., "Winter 2022").
 
+First set-up your API key and ORG id in environment variables:
+
+```shell
+export API_KEY="........."
+export ORG_ID="......."
+```
+
 We start by **extracting the active seasons for the club** (using its organisation id):
 
 ```shell
-$ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/organisations/<org_id>/seasons
+$ curl -H "x-phq-tenant: bv" -H "x-api-key: $API_KEY" https://api.playhq.com/v1/organisations/$ORG_ID/seasons
 
 {
     "data": [
@@ -135,7 +144,7 @@ $ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/
 Season Summer 22/23 has id `a94981b4-75b7-429f-9005-915182ab6153`. We can then **extract all the teams** registered for that season:
 
 ```shell
-$ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/seasons/a94981b4-75b7-429f-9005-915182ab6153/teams
+$ curl -H "x-phq-tenant: bv" -H "x-api-key: $API_KEY" https://api.playhq.com/v1/seasons/a94981b4-75b7-429f-9005-915182ab6153/teams
 ```
 
 This will yield all the teams in the season. We can extract the club's teams by matching their orgasnisation id. Each team will have an id, for example, team "Magic U10 Boys Gold" has id `bce059fc-67a0-4167-80ee-c2a8fcf4faad`. 
@@ -143,7 +152,7 @@ This will yield all the teams in the season. We can extract the club's teams by 
 We can then **extract all the team fixture** published so far (this may include past, and future games):
 
 ```shell
-$ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/teams/bce059fc-67a0-4167-80ee-c2a8fcf4faad/fixture
+$ curl -H "x-phq-tenant: bv" -H "x-api-key: $API_KEY" https://api.playhq.com/v1/teams/bce059fc-67a0-4167-80ee-c2a8fcf4faad/fixture
 
 {
     "data": [
@@ -210,8 +219,8 @@ The above JSON reply has been formatted for better legibility.
 
 The last `metadata` information of each JSON reply, states whether there are more follow-up pages using a cursor parameter. To get the next page:
 
-```
-$ curl -H "x-phq-tenant: bv" -H "x-api-key: <x-api-key>" https://api.playhq.com/v1/seasons/a94981b4-75b7-429f-9005-915182ab6153/teams?cursor=MaMx
+```shell
+$ curl -H "x-phq-tenant: bv" -H "x-api-key: $API_KEY" https://api.playhq.com/v1/seasons/a94981b4-75b7-429f-9005-915182ab6153/teams?cursor=MaMx
 ```
 
 The above interaction is done in Python via function `get_json(self, key)`, which provides an iterator with the various response pages, one by one.
@@ -220,11 +229,9 @@ The above interaction is done in Python via function `get_json(self, key)`, whic
 
 To access the games in the PlayHQ admin system use:
 
+```shell
+https://bv.playhq.com/org/{$ORG_ID}/games?date=<YY_MM_DD>
 ```
-https://bv.playhq.com/org/{ORG_ID}/games?date=<YY_MM_DD>
-```
-
-
 
 ## Contact
 

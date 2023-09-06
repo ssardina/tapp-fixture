@@ -4,8 +4,9 @@
 CLUB_NAME = "Brunswick Magic Basketball Club"
 TIMEZONE = "Australia/Melbourne"
 
-SEASON = "Summer 2022/23"
-PLAYHQ_SEASON_URL = "https://bit.ly/bmbc-s22"   # generate this once with bit.ly
+SEASON = "Winter 2023"
+SEASON_ID = "cdbe3065-2a32-4c6d-8771-f8fae3fa7611" # Victorian Junior Domestic - Winter 2023
+PLAYHQ_SEASON_URL = "https://bit.ly/bmbc-w23"   # generate this once with bit.ly
 
 # where to save the output files (e.g., fixtures)
 OUTPUT_PATH = "Brunswick_Magics/2022.02.Summer_22/fixture"

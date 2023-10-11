@@ -305,11 +305,15 @@ class PlayHQ(object):
         return games_tapps_df
 
     def build_teamsapp_bye_schedule(self, teams: list, date: datetime, desc_bye=DESC_BYE_TAPP_DEFAULT) -> pd.DataFrame:
+        """Adds BYE entries to the set of teams for a particular day
+
+        The teams is a list of team names as they appear in TeamApps
+
+        """
         if teams is None or len(teams) == 0:  # there are BYE games
             return None
 
         bye_teams_df = pd.DataFrame(teams, columns =['team_name'])
-        # bye_teams_df['team_name'] = bye_teams_df.apply(lambda x: re.search("U.*", x['name']).group(0), axis=1)
 
         bye_teams_df['access_groups'] = bye_teams_df['team_name']
         bye_teams_df['event_name'] = bye_teams_df['team_name'] + " - BYE"

@@ -6,11 +6,13 @@ __email__ = "ssardina@gmail.com"
 # __version__ = "1.0.1"
 # __status__ = "Production"
 
+import traceback
 import pyshorteners # https://pyshorteners.readthedocs.io/en/latest/
 import json
 import datetime
 import calendar
 import pandas as pd
+import time
 
 
 ###########################################################
@@ -38,8 +40,9 @@ def shorten_url(url):
     s = pyshorteners.Shortener()
     try:
         return s.tinyurl.short(url)
-    except:
-        return s.dagd.short(url)
-
-
+    # except:
+    #     return s.dagd.short(url)
+    except: # in case of error, wait 1 second and try again
+        time.sleep(1)
+        return shorten_url(url)
 

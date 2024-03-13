@@ -249,6 +249,11 @@ class PlayHQ(object):
             pd.DataFrame: a dataframe representing CSV file for import into TeamApp Schedule
         """
         def extract_opponent(team_id, competitors):
+            # this happens in FINALS when the team is waiting for another play-in game
+            # game will be in PLAYHQ 1 week before but with a team called "Winner Game 6" for example
+            if len(competitors) != 2:
+                return "PENDING"
+
             if competitors[0]['id'] != team_id:
                 return competitors[0]['name']
             else:

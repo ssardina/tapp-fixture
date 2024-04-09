@@ -26,7 +26,7 @@ These names generally be very similar to the ones registered in PlayHQ. For exam
 
 The first thing to set-up, once per season, is the club configuration file, which defines a few variables.
 
-Make a copy of the template [`config](config_template.py), and complete it according to the Club's details.
+Make a copy of the template [config_template.py](config_template.py), and complete it according to the Club's details.
 
 Of particular importance are PlayHQ keys to access the Public API:
 

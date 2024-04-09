@@ -42,13 +42,13 @@ This configuration file will be designed at the start of the season and remained
 
 ## How to use it
 
-To run the system, open notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and change/configure the first section, with the name of the configuration file of the club and the interval dates you want to extract games from.
+To run the system, use notebook [playhq_scrape.ipynb](playhq_scrape.ipynb) and change/configure the first section, with the name of the configuration file of the club and the interval dates you want to extract games from. You can get the season id at the start of each season using notebook [playhq_get_seasons.ipynb](playhq_get_seasons.ipynb).
 
 Then, run the system cell by cell, checking on the way all is consistent.
 
 In the last steps, it will generate a `CSV` file ready to be up imported to TeamApp in the Schedule section.
 
-## PlayHQ REST API
+## PlayHQ REST API via the shell
 
 This system uses PlayHQ public REST API:
 
@@ -64,7 +64,11 @@ export API_KEY="........."
 export ORG_ID="......."
 ```
 
-We start by **extracting the active seasons for the club** (using its organisation id):
+We start by **extracting the active seasons for the club**.
+
+
+We start by **extracting the active seasons for the club** (using its organisation id). This can be done using the [playhq_get_seasons.ipynb](playhq_get_seasons.ipynb) notebook.
+
 
 ```shell
 $ curl -H "x-phq-tenant: bv" -H "x-api-key: $API_KEY" https://api.playhq.com/v1/organisations/$ORG_ID/seasons

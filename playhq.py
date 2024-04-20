@@ -8,6 +8,7 @@ __email__ = "ssardina@gmail.com"
 
 
 import json
+from tqdm.notebook import tqdm
 
 # from sqlite3 import Timestamp
 import pandas as pd
@@ -276,7 +277,7 @@ class PlayHQ(object):
 
         club_upcoming_games = []
         team_errors = []
-        for team in teams_df[["id", "name"]].to_records(index=False):
+        for team in tqdm(teams_df[["id", "name"]].to_records(index=False)):
             logging.debug(f"Extracting games for team: {team}")
             team_name = team[1]
             team_id = team[0]
